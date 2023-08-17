@@ -1,0 +1,52 @@
+#https://www.kaggle.com/code/sripadaadiga/datascience-using-python
+# This Python 3 environment comes with many helpful analytics libraries installed
+# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python
+# For example, here's several helpful packages to load
+
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+
+# Input data files are available in the read-only "../input/" directory
+# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
+
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+
+# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using "Save & Run All" 
+# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session
+
+#to read the file
+import pandas as pd
+df=pd.read_csv('/kaggle/input/telecom-churn/telecom_churn.csv')
+#churn=0 means staying and churn=1 means leaving the network
+df
+
+df.info()
+
+df.describe()
+#as there are no missing values no need of cleaning
+
+df['Churn'].value_counts()
+#for checking who stayed and left
+#df['Churn'].value_counts(normalize=True)*100
+
+#reasons for leaving the network
+import seaborn as cat
+
+
+cat.boxplot(x='Churn',y='CustServCalls',data=df)
+#most of them have called twice so they left.yellow
+
+
+df.groupby('Churn')['CustServCalls'].describe()
+
+cat.boxplot(x='Churn',y='MonthlyCharge',data=df)
+
+cat.scatterplot(x='MonthlyCharge',y='OverageFee',data=df,hue='Churn')
+
+import matplotlib.pyplot as plt
+plt.figure(figsize=(10,8))
+cat.heatmap(df.corr(),annot=True)
+
